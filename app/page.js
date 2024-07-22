@@ -1,95 +1,52 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client"
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+ 
 
 export default function Home() {
+  const [posts,setPosts]=useState([])
+
+  useEffect(()=>{
+    fetch(process.env.NEXT_PUBLIC_API_URL+"/posts")
+    .then((res)=>res.json())
+    .then((res)=>setPosts(res))
+
+  },[])
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+    <>
+    
+    <main className="container mx-auto p-5">
+   
+        <h2 className="font-bold mb-4">Welcome to Our Blog</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </main>
+     <div className="d-flex  px-4 container col-lg-6 mb-5">
+     <input type="text" className="px-4 py-2 form-control rounded-3 me-3" placeholder="Search..."/>
+     <button className="px-4 py-2 bg-primary text-white rounded-3">Search</button>
+   </div>
+
+   <div className="d-flex gap-4 container m-auto " >
+   {
+    posts.map((items,index)=>(
+ <>
+  <Link href={"/post/"+items._id}>
+  <div className=" p-4 bg-white shadow-lg rounded-3" key={index}>
+    <img className="w-100 h-48 object-cover mb-4" src={items.image} alt="Post Image"/> 
+    <h5 className="text-xl font-semibold mb-2">{items.title}</h5>
+    <p className="text-gray-600">{items.short_description}.</p>
+  </div>
+  </Link>
+  
+ 
+ </>
+
+
+
+))
+}
+</div>
+  
+   </>
   );
 }
